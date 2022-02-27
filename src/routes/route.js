@@ -1,49 +1,56 @@
 const express = require('express');
 const router = express.Router();
 
-// Problem1:  players array outside( on the top ) of the api( so that data is maintained across api hits )
-// Write a POST /players api that creates a new player ( that saves a player’s details and doesn’t allow saving the data of a player with a name that already exists in the data)
+// ASSIGNMENT:
+// you will be given an array of persons ( i.e an array of objects )..each person will have  a {name: String , age: Number, votingStatus: true/false(Boolean)}
+// take input in query param as votingAge..and for all the people above that age, change votingStatus as true
+// also return an array consisting of only the person that can vote
 
-let players = [];
-router.post('/players', function(req, res){
-    let player = req.body
-    let playerName = player.name
-    for (let i=0; i<players.length; i++){
-        if(players[i].name == playerName){
-            res.send("player already exist")
-        } 
+let persons= [
+   {
+   name: "PK",
+   age: 10,
+   votingStatus: false
+},
+{
+   name: "SK",
+   age: 20,
+   votingStatus: false
+},
+{
+   name: "AA",
+   age: 70,
+   votingStatus: false
+},
+{
+   name: "SC",
+   age: 5,
+   votingStatus: false
+},
+{
+   name: "HO",
+   age: 40,
+   votingStatus: false
+}
+]
+ 
+router.post('/voting', function(req, res){
+    let votingAge = req.query.votingAge
+
+    let a = [];
+    for (let i=0; i<persons.length; i++){
+        if (persons[i].age > votingAge){
+            persons[i].votingStatus = true
+            a.push(persons[i])
+        }
     }
-    players.push(player)
-    console.log("Here is the player array", player)
-    res.send(players)
+    if(a.length>0)
+    {
+        return res.send(a)
+    } else{
+        return res.send("no member found")
+    }
 });
 
-// Problem2:
-
-router.post('/players/:playerName/bookings/:bookingId', function(req, res){
-   let name = req.params.playerName
-   let isPresent = false;
-   for (let i=0; i<players.length; i++){
-       if (players[i].name == name){
-           isPresent = true;
-       }
-   }
-   if(!isPresent){
-       res.send("player not present")
-   }
-   let booking = req.body;
-   let bookingId = req.params.bookingId;
-   for (let i=0; i<players.bookingId; i++){
-       if (players[i].name == name){
-           for (j=0; j<players[i].booking.length; i++){
-               if (players[i].booking[j].bookingNumber == bookingId){
-                   res.send("booking with similar Id already exists")
-               }
-           }
-           players[i].bookings.push(booking)
-       }
-   }
-   res.send(players)
-});
 
 module.exports = router;
