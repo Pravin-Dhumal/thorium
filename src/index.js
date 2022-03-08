@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-mongoose.connect("mongodb+srv://functionup-cohort:G0Loxqc9wFEGyEeJ@cluster0.rzotr.mongodb.net/Pritesh8769811-DB?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://functionup-cohort:G0Loxqc9wFEGyEeJ@cluster0.rzotr.mongodb.net/Pravin-DB?retryWrites=true&w=majority", {
     useNewUrlParser: true
 })
 .then( () => console.log("MongoDb is connected"))
@@ -26,19 +26,23 @@ let globalMiddleware = function(req, res, next){
     res.setHeader('batch','thorium')
     console.log('After adding custom response header '+JSON.stringify(res.getHeaders()))
     req.newAtribute = 'India'
-    let date = currentDate.getDate()
-    let month = currentDate.getMonth() + 1
-    let year = currentDate.getFullYear()
-    let hour = currentDate.getHours()
-    let minutes = currentDate.getMinutes()
-    let seconds = currentDate.getSeconds()
 
-    let formattedDate = year + "-" + month + "-" + date + " " + hour + ":" + minutes + ":" + seconds
-    let url = req.originalUrl
-    let ip = req.ip
-    let result = formattedDate + ", " + ip + ", " + url
+
     
-    console.log(result)
+
+    // let date = currentDate.getDate()
+    // let month = currentDate.getMonth() + 1
+    // let year = currentDate.getFullYear()
+    // let hour = currentDate.getHours()
+    // let minutes = currentDate.getMinutes()
+    // let seconds = currentDate.getSeconds()
+
+    // let formattedDate = year + "-" + month + "-" + date + " " + hour + ":" + minutes + ":" + seconds
+    // let url = req.originalUrl
+    // let ip = req.ip
+    // let result = formattedDate + ", " + ip + ", " + url
+    
+    // console.log(result)
     next()
 }
 
