@@ -26,5 +26,3 @@ const collegeSchema = new mongoose.Schema( {
 
 module.exports = mongoose.model('college', collegeSchema) 
 
-
-//  /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
