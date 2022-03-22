@@ -9,7 +9,7 @@ router.post("/colleges" , collegeController.createCollege)
 //   create : intern
 router.post("/interns" , internController.createIntern)
 
-//   get :  colleges
+//   get :  colleges  with interns details 
 router.get("/collegeDetails" , collegeController.getColleges)
 
 module.exports = router;
