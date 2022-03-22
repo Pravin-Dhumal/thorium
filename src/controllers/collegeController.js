@@ -94,7 +94,7 @@ const getColleges = async function ( req ,res ) {
         if( !isValid(colName) )    return res.status(400).send({ status : false, message: 'please provide college Name'})
         
         // check : if any college is exist with given name 
-        const collegeId = await collegeModel.find({ name : colName }).select({ _id : 1})
+        const collegeId = await collegeModel.find({ name : colName , isDeleted : false }).select({ _id : 1})
         if( !Object.keys(collegeId).length > 0)  return res.status(404).send({ status : false, message: 'No data found'})
 
         // retrieve : college details
