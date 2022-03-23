@@ -69,13 +69,24 @@ const getColleges = async function ( req ,res ) {
         const intern = await internModel.find({ collegeId : collegeId }).select({name:1,mobile:1,email:1})
 
         // formatting : require output
-        let obj = {name : colleges.name ,
-                   fullname : colleges.fullname ,
-                   logoLink : colleges.logoLink , 
-                   interests : intern}
+        if ( intern.length > 0){
+            let obj = {name : colleges.name ,
+                fullname : colleges.fullname ,
+                logoLink : colleges.logoLink , 
+                interests : intern}
+        
+        //  send : response
+        res.status(200).send({status : true ,data : obj })
+        }
+        else{
+            let obj = {name : colleges.name ,
+                fullname : colleges.fullname ,
+                logoLink : colleges.logoLink , 
+                interests : "No intern applied"}
 
         //  send : response
         res.status(200).send({status : true ,data : obj })
+        }
     }
     catch ( error ) {
         console.log(error.message)
