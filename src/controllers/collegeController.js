@@ -18,7 +18,7 @@ const createCollege = async function( req , res ) {
         const data = req.body
         let {name , logoLink} = data
         // check : if request body is empty
-        if ( !Object.keys(data) > 0)  return res.status(400).send({status : false ,message : "Please enter data"})
+        if ( !Object.keys(data).length > 0)  return res.status(400).send({status : false ,message : "Please enter data"})
 
         // check : if any data field has no value or it is empty
         if( !isValid(data.name) )    return res.status(400).send({ status : false, message: 'please provide short name'})
