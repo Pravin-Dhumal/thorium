@@ -42,10 +42,10 @@ const createIntern = async function (req, res) {
 
         // check : duplication
         email = await internModel.findOne({email})
-        if(email)   return  res.status(400).send({ status : false ,message : "This eamil already in use,please provide another email"})
+        if(email)   return  res.status(400).send({ status : false ,message : "This eamil is already in use,please provide another email"})
 
         mob = await internModel.findOne({mob})
-        if(mob)   return  res.status(400).send({ status : false ,message : "This mobile number already in use,please provide another mobile number"})
+        if(mob)   return  res.status(400).send({ status : false ,message : "This mobile is number already in use,please provide another mobile number"})
 
         // check : if collegeId is invalid 
         const college = await collegeModel.find({ _id: data.collegeId })

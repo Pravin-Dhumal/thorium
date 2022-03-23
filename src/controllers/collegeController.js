@@ -30,10 +30,10 @@ const createCollege = async function( req , res ) {
 
         // checking : if any key value is duplicate
         name = await collegeModel.findOne({name})
-        if(name)   return  res.status(400).send({ status : false ,message : "This name already in use,please provide another name"})
+        if(name)   return  res.status(400).send({ status : false ,message : "This name is already in use,please provide another name"})
 
         logoLink = await collegeModel.findOne({logoLink})
-        if(logoLink)   return  res.status(400).send({ status : false ,message : "This logoLink already in use,please provide another logoLink"})
+        if(logoLink)   return  res.status(400).send({ status : false ,message : "This logoLink is already in use,please provide another logoLink"})
 
         // validation : logoLink should be valid
         if (!(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(data.logoLink))) {
