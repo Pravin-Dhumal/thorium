@@ -41,10 +41,14 @@ const getColleges = async function ( req ,res ) {
     try {
         const colName = req.query.collegeName
 
+        // check : collegeName should bs present in query param 
+        if( !colName )   return res.status(400).send({ status : false, message: 'please provide collegeName in query params'})
+
         // check : if colNmae is empty
         if( !isValid(colName) )    return res.status(400).send({ status : false, message: 'please provide college Name'})
         
         // check : if any college is exist with given name 
+        // retrieve : college ID
         const collegeId = await collegeModel.find({ name : colName , isDeleted : false }).select({ _id : 1})
         if( !Object.keys(collegeId).length > 0)  return res.status(404).send({ status : false, message: 'No data found'})
 
