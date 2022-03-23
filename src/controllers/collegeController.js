@@ -31,6 +31,7 @@ const createCollege = async function( req , res ) {
         // checking : if any key value is duplicate
         name = await collegeModel.findOne({name})
         if(name)   return  res.status(400).send({ status : false ,message : "duplicate value (name) "})
+        
         logoLink = await collegeModel.findOne({logoLink})
         if(logoLink)   return  res.status(400).send({ status : false ,message : "duplicate value (logoLink) "})
 
