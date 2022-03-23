@@ -25,6 +25,9 @@ const createIntern = async function( req , res ) {
         if( !isValid(data.mobile) )    return res.status(400).send({ status : false, message: 'please provide mobile'})
         if( !isValid(data.collegeId) )    return res.status(400).send({ status : false, message: 'please provide collegeId'})
 
+        // setting : default values 
+        if (data.isDeleted != null) data.isDeleted = false
+        
         // check : if collegeId is invalid 
         const college = await collegeModel.find({ _id : data.collegeId})
         if ( !college.length > 0 )  return res.status(400).send({ status : false , message : "Please enter valid collegeId"})

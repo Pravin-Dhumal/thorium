@@ -25,6 +25,9 @@ const createCollege = async function( req , res ) {
         if( !isValid(data.fullname) )    return res.status(400).send({ status : false, message: 'please provide fullname'})
         if( !isValid(data.logoLink) )    return res.status(400).send({ status : false, message: 'please provide logoLink'})
 
+        // setting : defaults 
+        if (data.isDeleted != null) data.isDeleted = false
+
         // Create :  Intern 
         const createdIntern = await collegeModel.create(data)
         return res.status(201).send({ status : true , data : createdIntern})
