@@ -32,7 +32,7 @@ const createIntern = async function (req, res) {
         if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email))) {
             return res.status(400).send({ status: false, message: 'please provide valid email' })
         }
-        if (!(/^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(data.mobile))) {
+        if (!(/^\+?([6-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(data.mobile))) {
             return res.status(400).send({ status: false, message: 'please provide valid mob no' })
         }
         if (!(/^[0-9a-fA-F]{24}$/.test(data.collegeId))) {
