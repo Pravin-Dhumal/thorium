@@ -16,7 +16,7 @@ const isValid= function(value){
 const createCollege = async function( req , res ) {
     try {
         const data = req.body
-
+        let {name , logoLink} = data
         // check : if request body is empty
         if ( !Object.keys(data) > 0)  return res.status(400).send({status : false ,message : "Please enter data"})
 
@@ -27,6 +27,11 @@ const createCollege = async function( req , res ) {
 
         // setting : defaults 
         if (data.isDeleted != null) data.isDeleted = false
+
+        name = await collegeModel.findOne({name})
+        if(name)   return  res.status(400).send({ status : false ,message : "duplicate value (name) "})
+        logoLink = await collegeModel.findOne({logoLink})
+        if(logoLink)   return  res.status(400).send({ status : false ,message : "duplicate value (logoLink) "})
 
         // Create :  Intern 
         const createdIntern = await collegeModel.create(data)
@@ -59,7 +64,7 @@ const getColleges = async function ( req ,res ) {
         let colleges = await collegeModel.findById(collegeId).select({ name:1 , fullname:1 , logoLink:1 , _id:0})
 
         // retrieve : interested interns details
-        const intern = await internModel.find({ collegeId : collegeId })
+        const intern = await internModel.find({ collegeId : collegeId }).select({name:1,mobile:1,email:1})
 
         // formatting : require output
         let obj = {name : colleges.name ,
