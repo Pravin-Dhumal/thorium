@@ -35,6 +35,12 @@ const createCollege = async function( req , res ) {
         logoLink = await collegeModel.findOne({logoLink})
         if(logoLink)   return  res.status(400).send({ status : false ,message : "duplicate value (logoLink) "})
 
+        // validation : logoLink should be valid
+        if (!(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(data.logoLink))) {
+            return res.status(400).send({ status: false, message: 'please provide valid logoLink' })
+        }
+
+
         // Create :  College details
         const createdCollege = await collegeModel.create(data)
         return res.status(201).send({ status : true , data : createdCollege})
@@ -93,29 +99,6 @@ const getColleges = async function ( req ,res ) {
         return res.status(500).send({status : false , message : error.message})
     }
 }
-
-
-
-
-
-
-
-
-// /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports.createCollege = createCollege
 module.exports.getColleges = getColleges

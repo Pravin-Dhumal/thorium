@@ -20,7 +20,7 @@ const internSchema = new mongoose.Schema( {
         unique : true ,
         maxlength : 10 ,
         minLength : 10 ,
-        match : [/^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/, 'Please enter valid mobile number' ]
+        match : [/^\+?([6-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/, 'Please enter valid mobile number' ]
         
     } ,
     collegeId : {

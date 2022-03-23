@@ -18,6 +18,7 @@ const collegeSchema = new mongoose.Schema( {
         trim : true ,
         unique : true ,
         lowercase : true ,
+        match : /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
     },
     isDeleted : {
         type : Boolean ,
