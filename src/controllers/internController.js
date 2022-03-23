@@ -15,6 +15,7 @@ const isValid = function (value) {
 const createIntern = async function (req, res) {
     try {
         const data = req.body
+        let { email , mob} = data
 
         // check : if request body is empty
         if (!Object.keys(data).length > 0) return res.status(400).send({ status: false, message: "Please enter data" })
@@ -38,6 +39,13 @@ const createIntern = async function (req, res) {
         if (!(/^[0-9a-fA-F]{24}$/.test(data.collegeId))) {
             return res.status(400).send({ status: false, message: 'please provide valid collegeId' })
         }
+
+        // check : duplication
+        email = await internModel.findOne({email})
+        if(email)   return  res.status(400).send({ status : false ,message : "This eamil already in use,please provide another email"})
+
+        mob = await internModel.findOne({mob})
+        if(mob)   return  res.status(400).send({ status : false ,message : "This mobile number already in use,please provide another mobile number"})
 
         // check : if collegeId is invalid 
         const college = await collegeModel.find({ _id: data.collegeId })
