@@ -28,14 +28,15 @@ const createCollege = async function( req , res ) {
         // setting : defaults 
         if (data.isDeleted != null) data.isDeleted = false
 
+        // checking : if any key value is duplicate
         name = await collegeModel.findOne({name})
         if(name)   return  res.status(400).send({ status : false ,message : "duplicate value (name) "})
         logoLink = await collegeModel.findOne({logoLink})
         if(logoLink)   return  res.status(400).send({ status : false ,message : "duplicate value (logoLink) "})
 
-        // Create :  Intern 
-        const createdIntern = await collegeModel.create(data)
-        return res.status(201).send({ status : true , data : createdIntern})
+        // Create :  College details
+        const createdCollege = await collegeModel.create(data)
+        return res.status(201).send({ status : true , data : createdCollege})
     }
     catch ( error ) {
         console.log(error.message)
