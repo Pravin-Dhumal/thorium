@@ -5,20 +5,17 @@ const reviewSchema = new mongoose.Schema( {
     bookId: {
         type :ObjectId,
         ref : "book" ,
-        required : [true , "Please , enter subcategory"] 
+        required : [true , "Please , enter bookId"] 
     },
     reviewedBy: {
         type : String, 
-        required : [true , "Please , enter subcategory"],
-        default : 'Guest', 
-        value :  String            // "reviewer's name"
+        default : 'Guest'
     },
     reviewedAt: {
-        type : Date, 
-        required : [true , "Please , enter subcategory"]
+        type : Date
     },
     rating: {
-        type : Number,     //  min 1, max 5, 
+        type : Number,    // max : 5 , min : 1
         required : [true , "Please , enter subcategory"]
     },
     review: {

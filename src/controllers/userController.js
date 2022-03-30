@@ -21,72 +21,32 @@ const createUser = async function (req, res) {
     //  
     let { phone, email } = data
 
-    //  check : validation for title 
-    //  if : empty
+    //  CHECK : if any data field is empty
+    //  title
     if (!isValid(data.title)) {
       res.status(400).send({ status: false, message: 'please provide title' })
       return
     }
-    //  if : not in enum
-    if (data.title != ("Mr" || "Miss" || "Mrs")) {
-      return res.status(400).send({ status: false, message: 'please provide valid title ( Mr , Mrs or Miss)' })
-    }
-
-    //  check : validation for name  (empty)
+    //  name 
     if (!isValid(data.name)) {
       res.status(400).send({ status: false, message: 'please provide name' })
       return
     }
-
-    //  check : validation for phone 
-    //  if : empty
+    //  mobile no.
     if (!isValid(data.phone)) {
       res.status(400).send({ status: false, message: 'please provide phone' })
       return
     }
-    //  if : invalid
-    if (!(/^\+?([6-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(data.phone))) {
-      res.status(400).send({ status: false, message: 'please provide valid mob no' })
-      return
-    }
-    // if  : not unique
-    phone = await userModel.findOne({ phone })
-    if (phone) {
-      res.status(400).send({ status: false, message: "This mobile is number already in use,please provide another mobile number" })
-      return
-    }
-
-    //  check : validation for email
-    //  if : empty
+    //  email
     if (!isValid(data.email)) {
       res.status(400).send({ status: false, message: 'please provide email' })
       return
     }
-    //  if : invalid
-    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email))) {
-      res.status(400).send({ status: false, message: 'please provide valid email' })
-      return
-    }
-    //  if : not unique
-    email = await userModel.findOne({ email })
-    if (email) {
-      res.status(400).send({ status: false, message: "This  is email already in use,please provide another email" })
-      return
-    }
-
-    //  check : validation for password 
-    //  if : empty
     if (!isValid(data.password)) {
       res.status(400).send({ status: false, message: 'please provide password' })
       return
     }
-    //  if : invalid 
-    if (!(/^[a-zA-Z0-9!@#$%^&*]{8,16}$/.test(data.password))) {
-      res.status(400).send({ status: false, message: 'please provide valid password(minLength=8 , maxLength=16)' })
-      return
-    }
-
-    //  check : validation for address  ( empty )
+    //  address
     if (data.address != null) {
       if (data.address.street != null) {
         if (!isValid(data.address.street)) {
@@ -108,6 +68,43 @@ const createUser = async function (req, res) {
       }
     }
 
+
+    //  CHECK : if any data field has invalid value or not in proper format
+    //  title : not in enum
+    if (!(data.title == "Mr" || data.title == "Miss" || data.title == "Mrs")) {
+      return res.status(400).send({ status: false, message: 'please provide valid title ( Mr , Mrs or Miss)' })
+    }
+    //  mobile no  : invalid (format)
+    if (!(/^\+?([6-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(data.phone))) {
+      res.status(400).send({ status: false, message: 'please provide valid mob no' })
+      return
+    }
+    //  email : invalid (format)
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email))) {
+      res.status(400).send({ status: false, message: 'please provide valid email' })
+      return
+    }
+    //  password : invalid ( format )
+    if (!(/^[a-zA-Z0-9!@#$%^&*]{8,16}$/.test(data.password))) {
+      res.status(400).send({ status: false, message: 'please provide valid password(minLength=8 , maxLength=16)' })
+      return
+    }
+
+    //  CHECK : if any data field fails unique validation
+    // mobile no  : not unique
+    phone = await userModel.findOne({ phone })
+    if (phone) {
+      res.status(400).send({ status: false, message: "This mobile is number already in use,please provide another mobile number" })
+      return
+    }
+    //  email : not unique
+    email = await userModel.findOne({ email })
+    if (email) {
+      res.status(400).send({ status: false, message: "This  is email already in use,please provide another email" })
+      return
+    }
+
+    //  CREATE :  user
     const createdUser = await userModel.create(data)
     res.status(201).send({ data: createdUser })
   }
@@ -126,30 +123,38 @@ const loginUser = async function (req, res) {
     let email = req.body.email;
     let password = req.body.password;
 
-    // check :  validations for email
+    // CHECK :  if email and password is not present
+    //  email
     if (!email) {
       res.status(400).send({ status: false, error: " Please , enter email Id" })
       return
     }
-    if (!isValid(email)) {
-      res.status(400).send({ status: false, message: 'please provide email' })
-      return
-    }
-    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-      res.status(400).send({ status: false, message: 'please provide valid email' })
-      return
-    }
-
-    // check :  validations for password
+    //  password
     if (!password) {
       res.status(400).send({ status: false, error: " Please , enter password " })
       return
     }
+
+    //  CHECK : if password or email is empty
+    //  email
+    if (!isValid(email)) {
+      res.status(400).send({ status: false, message: 'please provide email' })
+      return
+    }
+    //  password
     if (!isValid(password)) {
       res.status(400).send({ status: false, message: 'please provide password' })
       return
     }
 
+    //  CHECK : if email is not is proper format
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
+      res.status(400).send({ status: false, message: 'please provide valid email' })
+      return
+    }
+
+    
+    //  CHECK : user with entered password and email is exist or not
     let user = await userModel.findOne({ email: email, password: password });
     if (!user)
       return res.status(400).send({
@@ -157,11 +162,16 @@ const loginUser = async function (req, res) {
         msg: "email or password is incorrect",
       });
 
-    let token = jwt.sign({ userId: user._id.toString() },
-      "secuiretyKeyToCheckToken",
-      { expiresIn: "30m" });
-    res.setHeader("x-api-key", token);
+    //  GENERATE : token  
+    const token = jwt.sign({
+      userId: user._id.toString(),
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 1 / 2 * 60 * 60
+    }, "Project-3/book-management");
+
+    res.setHeader("x-auth-token", token);
     res.status(200).send({ status: "User log-in successfully", data: token });
+    return
   }
   catch (err) {
     console.log(err)

@@ -27,7 +27,7 @@ const bookSchema = new mongoose.Schema( {
       required : [true , "Please , enter category"]
     },
   subcategory: {
-      type : String, 
+      type : [String] , 
       required : [true , "Please , enter subcategory"]
     },
   reviews: {
