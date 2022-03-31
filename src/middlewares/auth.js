@@ -24,7 +24,8 @@ const authentication = async function (req, res, next) {
     }
     catch (err) {
         console.log(err)
-        res.status(401).send({ status: false, message: err.message })
+        res.status(400).send({ status: false, message: err.message })
+        return
     }
 }
 
