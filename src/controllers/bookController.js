@@ -87,7 +87,7 @@ const createBook = async function (req, res) {
       return res.status(400).send({ status: false, message: 'please provide valid userId' })
     }
     //  ISBN
-    if (!(/^\+?([1-9]{4})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{5})$/.test(data.ISBN))) {
+    if (!(/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/.test(data.ISBN))) {
       return res.status(400).send({ status: false, message: 'please provide valid ISBN' })
     }
     //   releasedAt
@@ -330,7 +330,7 @@ const updateBook = async function (req, res) {
         return
       }
       //  if : not valid ( longer or shorter than standard ISBN )
-      if (!(/^\+?([1-9]{4})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{5})$/.test(dataForUpdation.ISBN))) {
+      if (!(/^\+?([1-9]{3})\)?[-. ]?([0-9]{10})$/.test(dataForUpdation.ISBN))) {
         res.status(400).send({ status: false, message: 'please provide valid ISBN' })
         return
       }

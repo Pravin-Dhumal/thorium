@@ -75,7 +75,7 @@ const createUser = async function (req, res) {
       return res.status(400).send({ status: false, message: 'please provide valid title ( Mr , Mrs or Miss)' })
     }
     //  mobile no  : invalid (format)
-    if (!(/^\+?([6-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(data.phone))) {
+    if (!(/^\+?([6-9]{1})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{5})$/.test(data.phone))) {
       res.status(400).send({ status: false, message: 'please provide valid mob no' })
       return
     }

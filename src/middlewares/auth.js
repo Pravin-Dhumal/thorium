@@ -6,7 +6,7 @@ const authentication = async function (req, res, next) {
         let isToken = req.headers["x-auth-token"]
         //  check : token is present or not
         if (!isToken) {
-            res.send({ status: false, msg: "token must be present" });
+            res.status(400).send({ status: false, msg: "token must be present" });
             return
         }
         //  decode : token
@@ -17,7 +17,7 @@ const authentication = async function (req, res, next) {
 
         //  check : if token is invalid 
         if (!decodedToken) {
-            res.send({ status: false, msg: "token is invalid" });
+            res.status(401).send({ status: false, msg: "token is invalid" });
             return
         }
         next();
@@ -47,7 +47,7 @@ const authorizatoin = async function (req, res, next) {
 
             //  check : authorization for entered userId
             if (tokenUserId != userId) {
-                res.status(400).send({ status: false, message: "You Haven't right to perform this task" })
+                res.status(403).send({ status: false, message: "You Haven't right to perform this task" })
                 return
             }
         }
@@ -72,7 +72,7 @@ const authorizatoin = async function (req, res, next) {
 
             //  check : authorization for entered userId
             if (tokenUserId != userId) {
-                res.status(400).send({ status: false, message: "You Haven't right to perform this task" })
+                res.status(403).send({ status: false, message: "You Haven't right to perform this task" })
                 return
             }
         }
