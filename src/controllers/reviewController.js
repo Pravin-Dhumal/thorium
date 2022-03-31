@@ -147,7 +147,7 @@ const updateReview = async function (req, res) {
         //  bookId : if doesn't exist in database OR deleted 
         const book = await bookModel.findOne({ _id: bookId, isDeleted: false })
         if (!book) {
-            res.status(400).send({ status: false, message: "Book doesn't exist" })
+            res.status(404).send({ status: false, message: "Book doesn't exist" })
             return
         }
 
@@ -159,7 +159,7 @@ const updateReview = async function (req, res) {
         //  reviewId : if doesn't exist in database OR deleted 
         const review = await reviewModel.findOne({ _id: reviewId, bookId: bookId, isDeleted: false })
         if (!review) {
-            res.status(400).send({ status: false, message: "This review doesn't exist for given bookId" })
+            res.status(404).send({ status: false, message: "This review doesn't exist for given bookId" })
             return
         }
 
@@ -235,7 +235,7 @@ const deleteReview = async function (req, res) {
         //  bookId : if doesn't exist in database OR deleted 
         const book = await bookModel.findOne({ _id: bookId, isDeleted: false })
         if (!book) {
-            res.status(400).send({ status: false, message: "Book doesn't exist" })
+            res.status(404).send({ status: false, message: "Book doesn't exist" })
             return
         }
 
@@ -247,7 +247,7 @@ const deleteReview = async function (req, res) {
         //  reviewId : if doesn't exist in database OR deleted 
         const review = await reviewModel.findOne({ _id: reviewId, bookId: bookId, isDeleted: false })
         if (!review) {
-            res.status(400).send({ status: false, message: "review doesn't exist for given bookId" })
+            res.status(404).send({ status: false, message: "review doesn't exist for given bookId" })
             return
         }
 
