@@ -57,7 +57,7 @@ const createReview = async function (req, res) {
         //  CHECK : if doesn't exist in database OR deleted 
         const bookId = await bookModel.find({ _id: data.bookId, isDeleted: false })
         if (!bookId.length > 0) {
-            res.status(400).send({ status: false, message: "Book doesn't Exist" })
+            res.status(400).send({ status: false, message: "Invalid bookId" })
             return
         }
 
