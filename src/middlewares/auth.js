@@ -52,15 +52,10 @@ const authorizatoin = async function (req, res, next) {
                 return
             }
         }
-        else {
-            //  if bookId present if path params ( for update , delete book )
-            const bookId = req.params.bookId
-
-            //  check : if userId is not present 
-            if (!bookId) {
-                res.status(400).send({ status: false, message: "Please enter bookId" })
-                return
-            }
+        
+        //  if book id present in path params( for update , delete book )
+        const bookId = req.params.bookId
+        if(bookId ) {
             //  check : if userId is invalid ( not in standard format )
             if (!(/^[0-9a-fA-F]{24}$/.test(bookId))) {
                 res.status(400).send({ status: false, message: 'please provide valid bookId' })
