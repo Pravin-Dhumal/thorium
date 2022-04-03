@@ -54,15 +54,15 @@ const createUser = async function (req, res) {
           return
         }
       }
-      if (data.address.street != null) {
-        if (!isValid(data.address.street)) {
-          res.status(400).send({ status: false, message: 'please provide street' })
+      if (data.address.city != null) {
+        if (!isValid(data.address.city)) {
+          res.status(400).send({ status: false, message: 'please provide city' })
           return
         }
       }
-      if (data.address.street != null) {
-        if (!isValid(data.address.street)) {
-          res.status(400).send({ status: false, message: 'please provide street' })
+      if (data.address.pincode != null) {
+        if (!isValid(data.address.pincode)) {
+          res.status(400).send({ status: false, message: 'please provide pincode' })
           return
         }
       }
