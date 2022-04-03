@@ -85,7 +85,7 @@ const createUser = async function (req, res) {
       return
     }
     //  password : invalid ( format )
-    if (!(/^[a-zA-Z0-9!@#$%^&*]{8,16}$/.test(data.password))) {
+    if (!(/^[a-zA-Z0-9!@#$%^&*]{8,15}$/.test(data.password))) {
       res.status(400).send({ status: false, message: 'please provide valid password(minLength=8 , maxLength=16)' })
       return
     }

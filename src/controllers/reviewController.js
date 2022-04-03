@@ -102,7 +102,7 @@ const createReview = async function (req, res) {
         const review = await reviewModel.create(data)
 
         //  RETREIVE : all reviews for the user
-        const allReviews = await reviewModel.find({ bookId: bookId ,isDeleted: false})
+        const allReviews = await reviewModel.find({ bookId: bookId ,isDeleted: false}).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 })
 
         //  SEND : final response
         res.status(201).send({
@@ -198,7 +198,7 @@ const updateReview = async function (req, res) {
             { new: true })
 
         //  RETREIVE : all reviews for the user
-        const allReviews = await reviewModel.find({ bookId: bookId ,isDeleted:false})
+        const allReviews = await reviewModel.find({ bookId: bookId ,isDeleted:false}).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 })
 
         //  SEND : final required response 
         res.status(200).send({

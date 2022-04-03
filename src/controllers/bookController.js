@@ -63,10 +63,20 @@ const createBook = async function (req, res) {
       return
     }
     //   subcategory
-    data.subcategory = data.subcategory.filter(x => x.trim())
-    if( data.subcategory.length == 0){
-      res.status(400).send({status: false, message: 'please provide subcategory'})
-      return 
+    //   ( if subcategogy is provided in string )
+    if (typeof (data.subcategory) === "string") {
+      if (!isValid(data.subcategory)) {
+        res.status(400).send({ status: false, message: 'please provide subcategory ' })
+        return
+      }
+    }
+    //   ( if subcategory is provided in array )
+    if (typeof (data.subcategory) === "object") {
+      data.subcategory = data.subcategory.filter(x => x.trim())
+      if (data.subcategory.length == 0) {
+        res.status(400).send({ status: false, message: 'please provide subcategory' })
+        return
+      }
     }
     //   reviews
     if (data.reviews != null) {
@@ -120,10 +130,6 @@ const createBook = async function (req, res) {
     if (data.isDeleted != null) data.isDeleted = false
     if (data.deletedAt != null) data.deletedAt = ''
     if (data.reviews != null) data.reviews = 0
-
-    //  FORMAT : releasedAt into format ( YYYY-MM-DD )
-    let date = data.releasedAt
-    const isDate = moment(date, 'YYYY-MM-DD')
 
     //  CREATE : Book details
     const createdBook = await bookModel.create(data)
@@ -354,7 +360,7 @@ const updateBook = async function (req, res) {
 
 
     //  Update : book by given details 
-    const updatedBook = await bookModel.findByIdAndUpdate({_id:bookId},
+    const updatedBook = await bookModel.findByIdAndUpdate({ _id: bookId },
       { ...dataForUpdation },
       { new: true })
 
