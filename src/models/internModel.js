@@ -17,7 +17,6 @@ const internSchema = new mongoose.Schema( {
     },
     mobile : {
         type : String ,
-        required : "Please enter mobile number" ,
         unique : true ,
         maxlength : 10 ,
         minLength : 10 ,

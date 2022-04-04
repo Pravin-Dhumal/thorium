@@ -12,10 +12,11 @@ const isValid = function (value) {
     }
 }
 
+
 const createIntern = async function (req, res) {
     try {
-        const data = req.body
-        let { email , mob} = data
+        let data = req.body
+        let { email , mob ,collegeName} = data
 
         // check : if request body is empty
         if (!Object.keys(data).length > 0) return res.status(400).send({ status: false, message: "Please enter data" })
@@ -24,7 +25,6 @@ const createIntern = async function (req, res) {
         if (!isValid(data.name)) return res.status(400).send({ status: false, message: 'please provide name' })
         if (!isValid(data.email)) return res.status(400).send({ status: false, message: 'please provide email' })
         if (!isValid(data.mobile)) return res.status(400).send({ status: false, message: 'please provide mobile' })
-        if (!isValid(data.collegeId)) return res.status(400).send({ status: false, message: 'please provide collegeId' })
 
         // setting : default values 
         if (data.isDeleted != null) data.isDeleted = false
@@ -36,9 +36,6 @@ const createIntern = async function (req, res) {
         if (!(/^\+?([6-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(data.mobile))) {
             return res.status(400).send({ status: false, message: 'please provide valid mob no' })
         }
-        if (!(/^[0-9a-fA-F]{24}$/.test(data.collegeId))) {
-            return res.status(400).send({ status: false, message: 'please provide valid collegeId' })
-        }
 
         // check : duplication
         email = await internModel.findOne({email})
@@ -47,10 +44,12 @@ const createIntern = async function (req, res) {
         mob = await internModel.findOne({mob})
         if(mob)   return  res.status(400).send({ status : false ,message : "This mobile is number already in use,please provide another mobile number"})
 
-        // check : if collegeId is invalid 
-        const college = await collegeModel.find({ _id: data.collegeId })
-        if (!college.length > 0) return res.status(400).send({ status: false, message: "Please enter valid collegeId" })
+        // check : if collegeId is invalid and retreiving college ID
+        const college = await collegeModel.findOne({ name: data.collegeName }).select({_id:1})
+        if (!college) return res.status(400).send({ status: false, message: "Please enter valid collegeId" })
 
+        data.collegeId = college._id
+        delete data.collegeName
 
         // Create :  Intern 
         const createdIntern = await internModel.create(data)
@@ -60,6 +59,5 @@ const createIntern = async function (req, res) {
         return res.status(500).send({ status: false, message: error.message })
     }
 }
-
 
 module.exports.createIntern = createIntern
