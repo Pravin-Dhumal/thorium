@@ -229,7 +229,7 @@ const getBooksById = async function (req, res) {
     const bookId = req.params.bookId
 
     //  check : if there is no bookId in path params
-    if (!bookId) {
+    if (Object.keys(bookId==0)) {
       res.status(400).send({ status: false, message: "Please , provide bookId in path params" })
       return
     }
@@ -281,7 +281,7 @@ const updateBook = async function (req, res) {
     const dataForUpdation = req.body
 
     //  check : if there is no bookId in path params
-    if (!bookId) {
+    if (Object.keys(bookId==0)) {
       res.status(400).send({ status: false, message: "Please , provide bookId in path params" })
       return
     }
@@ -393,7 +393,7 @@ const deleteBookById = async function (req, res) {
     const bookId = req.params.bookId
 
     //  check : if there is no bookId in path params
-    if (!bookId) {
+    if (Object.keys(bookId==0)) {
       res.status(400).send({ status: false, message: "Please , provide bookId in path params" })
       return
     }
