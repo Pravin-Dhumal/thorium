@@ -31,6 +31,12 @@ const createReview = async function (req, res) {
             res.status(400).send({ status: false, message: "Please enter data" })
             return
         }
+        
+        //  CHECK : bookId is present in params or not
+        if (Object.keys(bookId==0)) {
+            res.status(400).send({ status: false, message: "Please , provide bookId in path params" })
+            return
+        }
 
         //  check : Validations on entered data 
         //  bookId : if empty 
@@ -129,6 +135,16 @@ const updateReview = async function (req, res) {
         //  STORE : bookId , reviewId in variables by params
         const bookId = req.params.bookId
         const reviewId = req.params.reviewId
+        
+        //  CHECK : bookId or reviewId is not present in params
+        if (Object.keys(bookId==0)) {
+            res.status(400).send({ status: false, message: "Please , provide bookId in path params" })
+            return
+        }
+        if (Object.keys(reviewId==0)) {
+            res.status(400).send({ status: false, message: "Please , provide reviewId in path params" })
+            return
+        }
 
         //  STORE : data for updates in variable
         const dataForUpdation = req.body
@@ -226,6 +242,16 @@ const deleteReview = async function (req, res) {
         //  STORE : bookId , reviewId in variables by params
         const bookId = req.params.bookId
         const reviewId = req.params.reviewId
+        
+        //  CHECK : bookId or reviewId is not present in params
+        if (Object.keys(bookId==0)) {
+            res.status(400).send({ status: false, message: "Please , provide bookId in path params" })
+            return
+        }
+        if (Object.keys(reviewId==0)) {
+            res.status(400).send({ status: false, message: "Please , provide reviewId in path params" })
+            return
+        }
 
         //  CHECK : VALIDATIONS 
         //  bookId : if invalid 
