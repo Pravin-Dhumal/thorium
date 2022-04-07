@@ -1,5 +1,35 @@
 const urlModel= require("../models/urlModel")
 const shortId= require("shortid")
+const redis = require("redis");
+
+const { promisify } = require("util");
+
+//Connect to redis
+const redisClient = redis.createClient(
+  16368,
+  "redis-16368.c15.us-east-1-2.ec2.cloud.redislabs.com",
+  { no_ready_check: true }
+);
+redisClient.auth("Y52LH5DG1XbiVCkNC2G65MvOFswvQCRQ", function (err) {
+  if (err) throw err;
+});
+
+redisClient.on("connect", async function () {
+  console.log("Connected to Redis..");
+});
+
+
+
+//1. connect to the server
+//2. use the commands :
+
+//Connection setup for redis
+
+const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
+const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
+
+
+
 
 const isValid = function (value) {
     if (typeof value === 'undefined' || value === null) return false
@@ -84,4 +114,31 @@ const getUrl = async function(req,res){
            return res.status(500).send({status:true,message:err.message})
        }
 }
-  module.exports.getUrl=getUrl
+module.exports.getUrl=getUrl
+
+// const redirect = async function(req,res){
+//     try{
+//         let urlCode=req.params.urlCode
+//         if(!shortId.isValid(urlcode))return res.status(400).send({status:false,msg:'urlcode is not valid'})
+
+//         let urlDoc=await GET_ASYNC(`${req.params.urlCode}`)
+//         if(urlDoc){
+//             return res.redirect(urlDoc.longurl)
+//         }
+//         else{
+//         let url=await urlModel.findOne({urlCode:req.params.urlCode})
+//         await SET_ASYNC(`${req.params.urlCode}`,JSON.stringify(url))
+//         return res.redirect(url.longurl)
+//         }
+//     }
+//     catch(error){
+//         return res.status(500).send({status:false,msg:error.message})
+//     }
+//     }
+//     module.exports.redirect = redirect;
+        
+
+
+
+
+  
