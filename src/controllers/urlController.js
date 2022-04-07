@@ -80,22 +80,7 @@ catch(error)
 module.exports.urlShort = urlShort
 
 
-// const getUrl = async (req, res) => {
-
-//     try {
-//       const urlCode = req.params.urlCode;
-//       const urlDocument = await urlModel.findOne({ urlCode: urlCode })
-//       if (!urlDocument) {
-//         res.status(404).send({ status: true, msg: "url Document not Found" })
-//       }
-//       const longUrl = urlDocument.longUrl
-//       return res.redirect(longUrl)
-  
-//     } catch (error) {
-//       return res.status(500).send({ status: false, message: error.message })
-//     }
-  
-//   }
+// get url.........................
 const getUrl = async function(req,res){
     try{
         const urlCode=req.params.urlCode
@@ -116,14 +101,19 @@ const getUrl = async function(req,res){
 }
 module.exports.getUrl=getUrl
 
-// const redirect = async function(req,res){
-//     try{
-//         let urlCode=req.params.urlCode
-//         if(!shortId.isValid(urlcode))return res.status(400).send({status:false,msg:'urlcode is not valid'})
 
-//         let urlDoc=await GET_ASYNC(`${req.params.urlCode}`)
+// const getUrl = async function(req,res){
+//   try{
+//       const urlCode=req.params.urlCode
+//       if(!isValid(urlCode))return res.status(400).send({status:false,msg:"please enter urlCode."})
+      
+//       const url=await urlModel.findOne({urlCode:urlCode})
+//       console.log(url)
+//      
+//       if(!url)return res.status(400).send({status:false,msg:"invalid urlCode,please enter a valid one."})
+//        let urlDoc=await GET_ASYNC(`${req.params.urlCode}`)
 //         if(urlDoc){
-//             return res.redirect(urlDoc.longurl)
+//             return res.getUrl(urlDoc.longurl)
 //         }
 //         else{
 //         let url=await urlModel.findOne({urlCode:req.params.urlCode})
@@ -131,13 +121,13 @@ module.exports.getUrl=getUrl
 //         return res.redirect(url.longurl)
 //         }
 //     }
-//     catch(error){
-//         return res.status(500).send({status:false,msg:error.message})
-//     }
-//     }
-//     module.exports.redirect = redirect;
+     
         
-
+//      catch(err){
+//          return res.status(500).send({status:true,message:err.message})
+//      }
+// }
+// module.exports.getUrl=getUrl
 
 
 
