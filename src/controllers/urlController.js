@@ -35,7 +35,7 @@ const shortUrl = async (req, res) => {
 
         //  CHECK : if request body is empty
         if (!longUrl) {
-            res.status(400).send({ status: false, message: "Please enter some data in body" })
+            res.status(400).send({ status: false, message: "Please enter URL in body" })
             return
         }
 
