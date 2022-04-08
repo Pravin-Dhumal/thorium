@@ -54,7 +54,7 @@ const shortUrl = async (req, res) => {
         //  CHECK : if the entered url already has short url
         let result = await GET_ASYNC(`${longUrl}`)
         if (result) {
-            res.status(201).send({ status: true, data: JSON.parse(result) })
+            res.status(200).send({ status: true, data: JSON.parse(result) })
             return
         }
         else {
@@ -63,7 +63,7 @@ const shortUrl = async (req, res) => {
                 //  SETTING :  document in cache
                 await SET_ASYNC(`${longUrl}`, JSON.stringify(isLongUrl))
                 //  SENDING : response
-                res.status(201).send({ status: true, message: isLongUrl })
+                res.status(200).send({ status: true, message: isLongUrl })
                 return
             }
         }
