@@ -54,7 +54,7 @@ const shortUrl = async (req, res) => {
         //  CHECK : if the entered url already has short url
         let result = await GET_ASYNC(`${longUrl}`)
         if (result) {
-            res.status(200).send({ status: true, data: JSON.parse(result) })
+            res.status(201).send({ status: true, data: JSON.parse(result) })
             return
         }
         else {
@@ -63,7 +63,7 @@ const shortUrl = async (req, res) => {
                 //  SETTING :  document in cache
                 await SET_ASYNC(`${longUrl}`, JSON.stringify(isLongUrl))
                 //  SENDING : response
-                res.status(200).send({ status: true, message: isLongUrl })
+                res.status(201).send({ status: true, message: isLongUrl })
                 return
             }
         }
@@ -133,7 +133,7 @@ const urlCode = async (req, res) => {
             //  FINDING : data that have entered urlCode
             result = await urlModel.findOne({ urlCode }).select({ _id: 0, urlCode: 1, shortUrl: 1, longUrl: 1 })
             if (!result) {
-                res.status(400).send({ status: false, message: "This url code doesn't exist please try with another....." })
+                res.status(404).send({ status: false, message: "This url code doesn't exist please try with another....." })
                 return
             }
             //  SETTING : url data in cache
