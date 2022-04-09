@@ -57,15 +57,18 @@ const shortUrl = async (req, res) => {
         if (!validUrl.isUri(baseUrl)) { return res.status(400).send({ status: false, message: 'The base URL is invalid' }) }
 
         //  CHECK : if the entered url already has short url
+
         let dataCache = await GET_ASYNC(`${longUrl}`)
         if (dataCache) return res.status(200).send({ status: true, data: JSON.parse(dataCache) })
+
+        let result = await GET_ASYNC(`${longUrl}`)
+        if (result) return res.status(200).send({ status: true, data: JSON.parse(result) })
         else {
             const isLongUrl = await urlModel.findOne({ longUrl }).select({ _id: 0, urlCode: 1, shortUrl: 1, longUrl: 1 })
             if (isLongUrl) {
                 //  SETTING :  document in cache
                 await SET_ASYNC(`${longUrl}`, JSON.stringify(isLongUrl), "EX", 120)
                 return res.status(200).send({ status: true, message: isLongUrl })
-            }
         }
         //  GENERATE : urlcode
         const urlCode = shortid.generate(longUrl)
@@ -97,6 +100,7 @@ const shortUrl = async (req, res) => {
 
         return res.status(201).send({ status: true, message: 'Document created', data: data })
     }
+}
     catch (error) {
         console.log("error", error.message)
         res.status(500).send({ status: false, message: error.message })
@@ -118,6 +122,7 @@ const urlCode = async (req, res) => {
         let result = await GET_ASYNC(`${req.params.urlCode}`)
         if (result) {  
             let url = JSON.parse(result)
+console.log("URL",url)
             res.status(302).redirect(url)
             return
         } else {
