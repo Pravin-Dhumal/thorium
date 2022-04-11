@@ -75,14 +75,10 @@ const shortUrl = async (req, res) => {
 
         //  CHECK : if urlCode is already exist in database
         const isUrlCode = await urlModel.findOne({ urlCode })
-        if (isUrlCode) return res.status(400).send({ status: false, message: "This urlCode is already in use ,try again....." })
+        if (isUrlCode) return res.status(200).send({ status: false, message: "This urlCode is already generated for other url , please try again...." })
    
         //  CREATE : short url
         const shortUrl = baseUrl + urlCode
-
-        //  CHECK : if urlCode is already exist in database
-        const isShortUrl = await urlModel.findOne({ shortUrl })
-        if (isShortUrl) return res.status(400).send({ status: false, message: "This short url is already in use ,try again ..." })
 
         //  CREATE : DOC for database including ( urlCode , shortUrl , longUrl)
         const data = {
