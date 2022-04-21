@@ -98,7 +98,7 @@ const getProductByFilter = async (req, res) => {
         if (size != null) {
             if (!validator.isValid(size)) return res.status(400).send({ status: false, message: "Please enter size" })
             if (!validator.isValidSize(size)) return res.status(400).send({ status: false, message: "Please enter valid size" })
-            finalFilters['availableSizes'] = { $in: [size.toLowerCase(), size.toUpperCase()] }
+            finalFilters['availableSizes'] = { $in: [size] }
         }
 
         if (priceLessThan != null && priceGreaterThan != null) {

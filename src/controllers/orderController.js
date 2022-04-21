@@ -46,7 +46,7 @@ const createOrder = async (req, res) => {
             totalPrice = totalPrice + (isProductAvailable.price * items[i].quantity)
             totalQuantity = totalQuantity + items[i].quantity
 
-            const updateProductDetails = await productModel.findOneAndUpdate(items[i].productId, { $inc: { installments: -items[i].quantity } })
+            const updateProductDetails = await productModel.findOneAndUpdate({_id: items[i].productId}, { $inc: { installments: -items[i].quantity } })
         }
 
         finalData["userId"] = userId
@@ -111,15 +111,18 @@ const updateOrder = async (req, res) => {
 
             if (orderMatch.cancellable == true) {
                 if (status == "cancelled") {
+                    for (let i = 0; i < orderMatch.items.length; i++) {
+                        const updateProductDetails = await productModel.findOneAndUpdate({_id: orderMatch.items[i].productId}, { $inc: { installments: orderMatch.items[i].quantity } })
+                    }
                     const updateOrder = await orderModel.findOneAndUpdate({ _id: orderId }, { status: status, isDeleted: true, deletedAt: new Date() }, { new: true })
                     return res.status(200).send({ status: true, message: "Order Cancelled", data: updateOrder })
                 }
             }
             else return res.status(400).send({ status: true, message: "Can Not Cancel This Order, Because It's Not A Cancellable Order" })
-
         }
     }
     catch (error) {
+        console.log("error",error.message)
         return res.status(500).send({ status: false, message: error.message })
     }
 }
