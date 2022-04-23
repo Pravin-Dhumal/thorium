@@ -16,7 +16,7 @@ const isValid = function (value) {
 const createIntern = async function (req, res) {
     try {
         let data = req.body
-        let { email , mob ,collegeName} = data
+        let { email , mobile ,collegeName} = data
 
         // check : if request body is empty
         if (!Object.keys(data).length > 0) return res.status(400).send({ status: false, message: "Please enter data" })
@@ -41,7 +41,7 @@ const createIntern = async function (req, res) {
         email = await internModel.findOne({email})
         if(email)   return  res.status(400).send({ status : false ,message : "This eamil is already in use,please provide another email"})
 
-        mob = await internModel.findOne({mob})
+        mob = await internModel.findOne({mobile})
         if(mob)   return  res.status(400).send({ status : false ,message : "This mobile is number already in use,please provide another mobile number"})
 
         // check : if collegeId is invalid and retreiving college ID
