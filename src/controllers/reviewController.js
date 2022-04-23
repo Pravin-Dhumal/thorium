@@ -33,7 +33,7 @@ const createReview = async function (req, res) {
         }
         
         //  CHECK : bookId is present in params or not
-        if (Object.keys(bookId==0)) {
+        if (Object.keys(req.params.bookId)==0) {
             res.status(400).send({ status: false, message: "Please , provide bookId in path params" })
             return
         }
@@ -137,11 +137,11 @@ const updateReview = async function (req, res) {
         const reviewId = req.params.reviewId
         
         //  CHECK : bookId or reviewId is not present in params
-        if (Object.keys(bookId==0)) {
+        if (Object.keys(bookId)==0) {
             res.status(400).send({ status: false, message: "Please , provide bookId in path params" })
             return
         }
-        if (Object.keys(reviewId==0)) {
+        if (Object.keys(reviewId)==0) {
             res.status(400).send({ status: false, message: "Please , provide reviewId in path params" })
             return
         }
@@ -244,11 +244,11 @@ const deleteReview = async function (req, res) {
         const reviewId = req.params.reviewId
         
         //  CHECK : bookId or reviewId is not present in params
-        if (Object.keys(bookId==0)) {
+        if (Object.keys(bookId)==0) {
             res.status(400).send({ status: false, message: "Please , provide bookId in path params" })
             return
         }
-        if (Object.keys(reviewId==0)) {
+        if (Object.keys(reviewId)==0) {
             res.status(400).send({ status: false, message: "Please , provide reviewId in path params" })
             return
         }
