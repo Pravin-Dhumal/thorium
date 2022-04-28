@@ -131,6 +131,8 @@ const loginUser = async (req, res) => {
             iat: Math.floor(Date.now() / 1000),
             exp: Math.floor(Date.now() / 1000) + 30 * 60
         }, "Project-5/shopping-cart");
+        
+        res.setHeader("Authorization", token);
 
         return res.status(200).send({ status: true, message: "User login successfull", data: { usreId: user._id, token: token } });
     }
