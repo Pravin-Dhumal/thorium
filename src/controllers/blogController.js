@@ -1,12 +1,14 @@
-const { count } = require("console")
 const blogModel = require("../models/blogModel")
 const authorModel = require("../models/authorModel")
 
-const isValid= function(value){
-    if( typeof (value)=== 'undefined' || typeof (value)=== 'null') return false
-    if(typeof (value) === 'string' && value.trim().length >0 ) return true
+const isValid = function (value) {
+    if (typeof (value) === 'undefined' || typeof (value) === 'null') return false
+    if (typeof (value) === 'string' && value.trim().length > 0) return true
 }
-const isArray= function(value){
+const isArray = function (value) {
+    if (typeof (value) === "object") return true
+}
+const isEmptyArray = function (value) {
     if (typeof (value) === "object") {
         value = value.filter(x => x.trim())
         if (value.length == 0) return false
@@ -21,22 +23,26 @@ const createBlog = async function (req, res) {
 
         // checking if data is empty
         if (Object.keys(data) == 0) return res.status(400).send({ status: false, msg: "Bad request. Content to post missing" })
-        let {title , body , authorId, category, subcategory, tags}= data
+        let { title, body, authorId, category, subcategory, tags } = data
 
         // checking if authorId is valid or not
         if (!(/^[0-9a-fA-F]{24}$/.test(authorId))) {
             return res.status(400).send({ status: false, message: 'please provide valid authorId' })
         }
+
         let idMatch = await authorModel.findById(authorId)
-        if (!idMatch)return res.status(404).send({ status: false, msg: "No such author present in the database" })
+        if (!idMatch) return res.status(404).send({ status: false, msg: "No such author present in the database" })
 
         // checking , if any datafield has no value
         if (!isValid(authorId)) return res.status(400).send({ status: false, msg: 'please provide authorId' })
         if (!isValid(title)) return res.status(400).send({ status: false, msg: 'please provide title' })
         if (!isValid(category)) return res.status(400).send({ status: false, msg: 'please provide category' })
         if (!isValid(body)) return res.status(400).send({ status: false, msg: 'please provide body' })
-        if (!isArray(subcategory)) return res.status(400).send({ status: false, msg: 'please provide subcategory' })
-        if (!isArray(tags)) return res.status(400).send({ status: false, msg: 'please provide tags' })
+        if (!isArray(subcategory)) return res.status(400).send({ status: false, msg: 'please provide subcategory(In Array of string form)' })
+        if (!isArray(tags)) return res.status(400).send({ status: false, msg: 'please provide tags(In Array of string form)' })
+        if (!isEmptyArray(subcategory)) return res.status(400).send({ status: false, msg: 'please provide subcategory' })
+        if (!isEmptyArray(tags)) return res.status(400).send({ status: false, msg: 'please provide tags' })
+
 
         // setting default values
         if (data.isDeleted != null) data.isDeleted = false
@@ -96,6 +102,11 @@ const updateBlog = async function (req, res) {
         let blogId = req.params.blogId
         if (!blogId) return res.status(400).send({ status: false, msg: "Blog Id is required" })
 
+        // checking if blogId is valid or not
+        if (!(/^[0-9a-fA-F]{24}$/.test(blogId))) {
+            return res.status(400).send({ status: false, message: 'please provide valid blogId' })
+        }
+
         //  blogId is valid or not.
         let blog = await blogModel.findById(blogId)
         if (!blog) return res.status(404).send({ status: false, msg: "Blog does not exists" })
@@ -114,13 +125,15 @@ const updateBlog = async function (req, res) {
             if (!isValid(title)) return res.status(400).send({ status: false, msg: 'please provide title' })
         }
         if (subcategory != undefined) {
-            if (!isValid(subcategory)) return res.status(400).send({ status: false, msg: 'please provide subcategory' })
+            if (!isArray(subcategory)) return res.status(400).send({ status: false, msg: 'please provide subcategory(In Array of string form)' })
+            if (!isEmptyArray(subcategory)) return res.status(400).send({ status: false, msg: 'please provide subcategory' })
         }
         if (tags != undefined) {
-            if (!isValid(tags)) return res.status(400).send({ status: false, msg: 'please provide tags' })
+            if (!isArray(tags)) return res.status(400).send({ status: false, msg: 'please provide tags (In Array of string form)' })
+            if (!isEmptyArray(tags)) return res.status(400).send({ status: false, msg: 'please provide tags' })
         }
         if (body != undefined) {
-            if (!isValid(body)) return res.status(400).send({ status: false, msg: 'please provide body' })
+            if (!isArray(body)) return res.status(400).send({ status: false, msg: 'please provide body ' })
         }
 
         let updatedBlog = await blogModel.findOneAndUpdate({ _id: blogId },
@@ -144,6 +157,11 @@ const deleteBlogByPath = async function (req, res) {
         //  blogId is present in request path params or not.
         let blogId = req.params.blogId
         if (!blogId) return res.status(400).send({ status: false, msg: "Blog Id is required" })
+
+        // checking if authorId is valid or not
+        if (!(/^[0-9a-fA-F]{24}$/.test(blogId))) {
+            return res.status(400).send({ status: false, message: 'please provide valid blogId' })
+        }
 
         //  blogId is valid or not.
         let blog = await blogModel.findById(blogId)
@@ -192,7 +210,7 @@ const deleteBlogByQuery = async function (req, res) {
         if (!Object.keys(blog).length > 0) return res.status(404).send({ msg: "No blog exist with given filters " })
 
         // checking if blog already deleted 
-        let blogs = await blogModel.find({ authorId: req.query.authorId , isDeleted : false})
+        let blogs = await blogModel.find({ authorId: req.query.authorId, isDeleted: false })
         if (!blogs.length > 0) return res.status(400).send({ status: false, msg: "Blogs are already deleted" })
 
         // deleting blog
@@ -212,3 +230,6 @@ module.exports.deleteBlogByQuery = deleteBlogByQuery
 module.exports.deleteBlogByPath = deleteBlogByPath
 module.exports.updateBlog = updateBlog
 module.exports.getBlogs = getAllBlogs
+
+
+// 204 = no content 
