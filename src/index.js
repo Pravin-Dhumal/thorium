@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-mongoose.connect("mongodb+srv://pathakradhika02:xwz7d3tIw343fIrl@cluster0.4kdiu.mongodb.net/group24Database", {useNewUrlParser: true})
+mongoose.connect("mongodb+srv://pravindhumal:xwz7d3tIw343fIrl@cluster0.4kdiu.mongodb.net/group24Database", {useNewUrlParser: true})
     .then(() => console.log('mongodb running on 27017'))
     .catch(err => console.log(err))
 
